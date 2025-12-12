@@ -1,4 +1,5 @@
 #!/bin/bash
+
 set -e
 
 echo "=== Systeem updaten en Java installeren ==="
@@ -18,7 +19,7 @@ cd /opt/minecraft
 echo "=== Controleren of server.jar bestaat ==="
 if [ ! -f server.jar ]; then
   echo "!! server.jar niet gevonden in /opt/minecraft"
-  echo "   Kopieer eerst je server.jar naar /opt/minecraft en noem hem 'server.>
+  echo "   Kopieer eerst je server.jar naar /opt/minecraft en noem hem 'server.jar'."
   exit 1
 fi
 
@@ -28,5 +29,3 @@ echo "eula=true" > eula.txt
 echo "=== Klaar! Je kan nu de server starten met: ==="
 echo "    cd /opt/minecraft"
 echo "    java -Xmx1G -Xms1G -jar server.jar nogui"
-
-
