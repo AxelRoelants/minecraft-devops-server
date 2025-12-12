@@ -2,6 +2,9 @@
 
 set -e
 
+MC_URL="https://piston-data.mojang.com/v1/objects/64bb6d763bed0a9f1d632ec347938594144943ed/server.jar"
+
+
 echo "=== Systeem updaten en Java installeren ==="
 sudo apt update
 sudo apt upgrade -y
@@ -18,10 +21,10 @@ cd /opt/minecraft
 
 echo "=== Controleren of server.jar bestaat ==="
 if [ ! -f server.jar ]; then
-  echo "!! server.jar niet gevonden in /opt/minecraft"
-  echo "   Kopieer eerst je server.jar naar /opt/minecraft en noem hem 'server.jar'."
-  exit 1
+  echo "server.jar niet gevonden, downloaden vanaf Mojang..."
+  wget -O server.jar "$MC_URL"
 fi
+
 
 echo "=== EULA accepteren ==="
 echo "eula=true" > eula.txt
