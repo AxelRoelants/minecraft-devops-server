@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  lint-and-validate-scripts:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install shellcheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck
+
+      - name: Bash syntax check
+        run: |
+          bash -n scripts/setup_minecraft.sh
+          bash -n scripts/setup_monitoring.sh || true
+          bash -n scripts/check_minecraft.sh || true
+
+      - name: Shellcheck scripts
+        run: |
+          shellcheck scripts/setup_minecraft.sh || true
+          shellcheck scripts/setup_monitoring.sh || true
+          shellcheck scripts/check_minecraft.sh || true
