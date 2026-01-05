@@ -1,23 +1,40 @@
-# Deployment – Minecraft server
+# Deployment – Minecraft server (DevOps)
 
-Dit is hoe je mijn Minecraft-server start.
+Deze documentatie beschrijft hoe je dit project opnieuw kan deployen op een **fresh Ubuntu server** (lokale VM of AWS EC2).
+Doel: Minecraft-server + (optioneel) monitoring met Uptime Kuma, op een reproduceerbare manier via scripts.
 
-## Om de server te starten
+---
 
-1. Log in op de Ubuntu-server.
-2. Ga naar de map van de server:
+## 1) Vereisten
 
-   ```bash
-   cd /opt/minecraft
+- **Ubuntu 22.04 LTS** (of vergelijkbaar)
+- Internettoegang (om packages en server.jar te downloaden)
+- Toegang tot de server via SSH / EC2 Instance Connect
 
-Start de server:
+### Poorten (netwerk/firewall)
 
-java -Xmx1G -Xms1G -jar server.jar nogui
+**Minecraft:**
+- `25565/tcp` (Minecraft Java server)
 
-Info
+**Monitoring (Uptime Kuma):**
+- `3001/tcp` (web UI)  
+  *(soms draait dit op poort 80 afhankelijk van je setup)*
 
-De server draait in de map: /opt/minecraft
+**Beheer:**
+- `22/tcp` (SSH)
 
-Het serverbestand heet: server.jar
+> Op AWS moet je dit instellen in de **Security Group** (Inbound Rules).
+> Op Ubuntu kan dit via **UFW** (wordt automatisch gedaan voor 25565 door het script).
 
-De Minecraft-poort is: 25565/tcp
+---
+
+## 2) Deploy op een fresh Ubuntu server (aanrader)
+
+### 2.1 Repository clonen
+
+```bash
+sudo apt update
+sudo apt install -y git
+git clone https://github.com/AxelRoelants/minecraft-devops-server.git
+cd minecraft-devops-server
+chmod +x scripts/*.sh
